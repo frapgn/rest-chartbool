@@ -20,23 +20,49 @@ $.ajax({
     url: 'http://157.230.17.132:4024/sales',
     method: 'GET',
     success: function(data) {
-        updateSalesByMonth();
+        updateSalesByMonth(data);
+        dataForCharts();
+        makeLineChart();
     }
 });
 
-function updateSalesByMonth() {
-    for (var i = 0; i < data.length; i++) {
-        var originalDate = moment(data[i].date, 'DD-MM-YYYY').locale('it');
+function updateSalesByMonth(array) {
+    for (var i = 0; i < array.length; i++) {
+        var originalDate = moment(array[i].date, 'DD-MM-YYYY').locale('it');
         // console.log(originalDate);
         var month = originalDate.format('MMMM');
         // console.log(month);
-        salesByMonth[month] += data[i].amount;
+        salesByMonth[month] += array[i].amount;
         // console.log(salesByMonth[month]);
     }
     console.log(salesByMonth);
 }
 
+var months = [];
+var salesAmounts = [];
+
 function dataForCharts() {
-    var months = [];
-    var salesAmounts = [];
+
+    for (var key in salesByMonth) {
+        // console.log(key);
+        months.push(key);
+        salesAmounts.push(salesByMonth[key]);
+    }
+    console.log(months, salesAmounts);
 };
+
+function makeLineChart() {
+    var ctx = $('#lineChart');
+    var chart = new Chart(ctx, {
+
+        type: 'line',
+        data: {
+            datasets: [{
+                data: salesAmounts,
+                backgroundColor: 'lightcoral'
+            }],
+
+            labels: months
+        }
+    });
+}
