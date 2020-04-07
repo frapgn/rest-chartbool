@@ -20,12 +20,23 @@ $.ajax({
     url: 'http://157.230.17.132:4024/sales',
     method: 'GET',
     success: function(data) {
-        for (var i = 0; i < 3; i++) {
-            var originalDate = moment(data[i].date, 'DD-MM-YYYY').locale('it');
-            console.log(originalDate);
-            var month = originalDate.format('MMMM');
-            console.log(month);
-
-        }
+        updateSalesByMonth();
     }
 });
+
+function updateSalesByMonth() {
+    for (var i = 0; i < data.length; i++) {
+        var originalDate = moment(data[i].date, 'DD-MM-YYYY').locale('it');
+        // console.log(originalDate);
+        var month = originalDate.format('MMMM');
+        // console.log(month);
+        salesByMonth[month] += data[i].amount;
+        // console.log(salesByMonth[month]);
+    }
+    console.log(salesByMonth);
+}
+
+function dataForCharts() {
+    var months = [];
+    var salesAmounts = [];
+};
