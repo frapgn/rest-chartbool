@@ -58,8 +58,12 @@ function makeLineChart() {
         type: 'line',
         data: {
             datasets: [{
+                label: 'Vendite Mensili',
                 data: salesAmounts,
-                backgroundColor: 'lightcoral'
+                backgroundColor: 'rgba(173,216,230 ,0.5 )',
+                borderColor: 'rgba(67, 113, 152, .8)',
+                pointStyle: 'circle',
+                radius: 6
             }],
 
             labels: months
