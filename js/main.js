@@ -14,45 +14,87 @@ var salesByMonth = {
     ottobre: 0,
     novembre: 0,
     dicembre: 0,
-}
+};
 
+var individualSales = {};
+
+// Chiamata per #line-chart
 $.ajax({
     url: 'http://157.230.17.132:4024/sales',
     method: 'GET',
     success: function(data) {
         updateSalesByMonth(data);
-        dataForCharts();
-        makeLineChart();
+        var objectForLine = dataForLine();
+        makeLineChart(objectForLine.months, objectForLine.salesAmounts);
+    }
+});
+
+// Chiamata per #pie-chart
+$.ajax({
+    url: 'http://157.230.17.132:4024/sales',
+    method: 'GET',
+    success: function(data) {
+        updateIndividualSales(data);
+        console.log(individualSales);
+        var objectForPie = dataForPie();
+        console.log(objectForPie);
+        makePieChart(objectForPie.salesmans, objectForPie.salesAmounts);
     }
 });
 
 function updateSalesByMonth(array) {
     for (var i = 0; i < array.length; i++) {
         var originalDate = moment(array[i].date, 'DD-MM-YYYY').locale('it');
-        // console.log(originalDate);
         var month = originalDate.format('MMMM');
-        // console.log(month);
         salesByMonth[month] += array[i].amount;
-        // console.log(salesByMonth[month]);
     }
-    console.log(salesByMonth);
-}
+};
 
-var months = [];
-var salesAmounts = [];
+function updateIndividualSales(array) {
+    for (var i = 0; i < array.length; i++) {
+        if(individualSales[array[i].salesman] === undefined) {
+            individualSales[array[i].salesman] = 0;
+        }
+        individualSales[array[i].salesman] += array[i].amount;
+    }
+};
 
-function dataForCharts() {
+function dataForLine() {
+    var months = [];
+    var salesAmounts = [];
 
     for (var key in salesByMonth) {
         // console.log(key);
         months.push(key);
         salesAmounts.push(salesByMonth[key]);
     }
-    console.log(months, salesAmounts);
+    // console.log(months, salesAmounts);
+    return {
+        months: months,
+        salesAmounts: salesAmounts
+    }
+
 };
 
-function makeLineChart() {
-    var ctx = $('#lineChart');
+function dataForPie() {
+    var salesmans = [];
+    var salesAmounts = [];
+
+    for (var key in individualSales) {
+        // console.log(key);
+        salesmans.push(key);
+        salesAmounts.push(individualSales[key]);
+    }
+    // console.log(months, salesAmounts);
+    return {
+        salesmans: salesmans,
+        salesAmounts: salesAmounts
+    }
+
+};
+
+function makeLineChart(months,salesAmounts) {
+    var ctx = $('#line-chart');
     var chart = new Chart(ctx, {
 
         type: 'line',
@@ -65,8 +107,22 @@ function makeLineChart() {
                 pointStyle: 'circle',
                 radius: 6
             }],
-
             labels: months
         }
     });
-}
+};
+
+function makePieChart(salesmans,salesAmounts) {
+    var ctx = $('#pie-chart');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                label: 'Vendite individuali',
+                data: salesAmounts,
+                backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#71cece']
+            }],
+            labels: salesmans
+        }
+    });
+};

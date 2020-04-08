@@ -1,3 +1,16 @@
 body {
     background-color: rgb(219, 219, 219);
+    width: 100vw;
+}
+
+.clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.line-chart-wrapper,
+.pie-chart-wrapper {
+    width: 50%;
+    float: left;
 }
