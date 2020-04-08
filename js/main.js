@@ -28,6 +28,7 @@ $.ajax({
         updateSalesByMonth(data);
         var objectForLine = dataForLine();
         makeLineChart(objectForLine.months, objectForLine.salesAmounts);
+        console.log(typeof data[0].amount);
     }
 });
 
@@ -46,7 +47,8 @@ $.ajax({
 
 $('#btn-update-database').click(updateDatabase);
 // $('#btn-update-database').click(function() {
-//     console.log(moment($('#date').val()).format('DD/MM/YYYY'));
+//     // console.log(moment($('#date').val()).format('DD/MM/YYYY'));
+//     // console.log(typeof parseInt($('#amount').val()));
 // });
 
 function updateDatabase() {
@@ -59,6 +61,8 @@ function updateDatabase() {
             date: moment($('#date').val()).format('DD/MM/YYYY')
         },
         success: function() {
+            $('#salesmans-select').val('');
+            $('#amount').val('');
 
         }
     })
@@ -69,7 +73,7 @@ function updateSalesByMonth(array) {
     for (var i = 0; i < array.length; i++) {
         var originalDate = moment(array[i].date, 'DD-MM-YYYY').locale('it');
         var month = originalDate.format('MMMM');
-        salesByMonth[month] += array[i].amount;
+        salesByMonth[month] += parseInt(array[i].amount);
     }
 };
 
@@ -78,7 +82,7 @@ function updateIndividualSales(array) {
         if(individualSales[array[i].salesman] === undefined) {
             individualSales[array[i].salesman] = 0;
         }
-        individualSales[array[i].salesman] += array[i].amount;
+        individualSales[array[i].salesman] += parseInt(array[i].amount);
     }
 };
 
