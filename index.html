@@ -30,7 +30,7 @@
             <option value="Roberto">Roberto</option>
         </select>
 
-        <select id="months-select">
+        <!-- <select id="months-select">
             <option value="">Seleziona mese</option>
             <option value="Gennaio">Gennaio</option>
             <option value="Febbraio">Febbraio</option>
@@ -44,11 +44,13 @@
             <option value="Ottobre">Ottobre</option>
             <option value="Novembre">Novembre</option>
             <option value="Dicembre">Dicembre</option>
-        </select>
+        </select> -->
 
-        <input id="amount" type="number" value="" placeholder="Inserisci fatturato">
+        <input id="date" type="date" max="2017-12-31"  min="2017-01-01" value="">
 
-        <button type="button">Invia</button>
+        <input id="amount" type="number" placeholder="Inserisci fatturato">
+
+        <button id="btn-update-database" type="button">Invia</button>
 
     </div>
     <script src="js/main.js" charset="utf-8"></script>

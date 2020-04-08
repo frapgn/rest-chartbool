@@ -1,4 +1,6 @@
 
+var dateValue = $('#date').val('2017-01-01');
+
 var salesArchive = {};
 
 var salesByMonth = {
@@ -41,6 +43,27 @@ $.ajax({
         makePieChart(objectForPie.salesmans, objectForPie.salesAmounts);
     }
 });
+
+$('#btn-update-database').click(updateDatabase);
+// $('#btn-update-database').click(function() {
+//     console.log(moment($('#date').val()).format('DD/MM/YYYY'));
+// });
+
+function updateDatabase() {
+    $.ajax({
+        url: 'http://157.230.17.132:4024/sales',
+        method: 'POST',
+        data: {
+            salesman: $('#salesmans-select').val(),
+            amount: parseInt($('#amount').val()),
+            date: moment($('#date').val()).format('DD/MM/YYYY')
+        },
+        success: function() {
+
+        }
+    })
+
+}
 
 function updateSalesByMonth(array) {
     for (var i = 0; i < array.length; i++) {
