@@ -28,7 +28,7 @@ $.ajax({
         updateSalesByMonth(data);
         var objectForLine = dataForLine();
         makeLineChart(objectForLine.months, objectForLine.salesAmounts);
-        console.log(typeof data[0].amount);
+        // console.log(typeof data[0].amount);
     }
 });
 
@@ -38,14 +38,16 @@ $.ajax({
     method: 'GET',
     success: function(data) {
         updateIndividualSales(data);
-        console.log(individualSales);
+        // console.log(individualSales);
         var objectForPie = dataForPie();
-        console.log(objectForPie);
+        // console.log(objectForPie);
         makePieChart(objectForPie.salesmans, objectForPie.salesAmounts);
     }
 });
 
-$('#btn-update-database').click(updateDatabase);
+$('#btn-update-database').click(function() {
+    updateDatabase();
+});
 // $('#btn-update-database').click(function() {
 //     // console.log(moment($('#date').val()).format('DD/MM/YYYY'));
 //     // console.log(typeof parseInt($('#amount').val()));
@@ -122,7 +124,7 @@ function dataForPie() {
 
 function makeLineChart(months,salesAmounts) {
     var ctx = $('#line-chart');
-    var chart = new Chart(ctx, {
+    var lineChart = new Chart(ctx, {
 
         type: 'line',
         data: {
@@ -141,7 +143,7 @@ function makeLineChart(months,salesAmounts) {
 
 function makePieChart(salesmans,salesAmounts) {
     var ctx = $('#pie-chart');
-    var chart = new Chart(ctx, {
+    var pieChart = new Chart(ctx, {
         type: 'pie',
         data: {
             datasets: [{
